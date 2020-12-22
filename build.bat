@@ -1,3 +1,3 @@
 @echo off
-rem cl /nologo /Zi permutator.c
-cl /nologo /Zi permutator.cpp
+cl /nologo /Zi /W4 permutator.c
+cl /nologo /Zi /W4 permutator.cpp
