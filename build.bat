@@ -1,2 +1,3 @@
 @echo off
-cl /nologo /Zi main.c
+rem cl /nologo /Zi permutator.c
+cl /nologo /Zi permutator.cpp

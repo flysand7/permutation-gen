@@ -8,7 +8,9 @@ struct {
 } typedef t_permutation;
 
 #include<stdbool.h> //true, false
-#include<stdlib.h> //memcpy, malloc
+#include<stdlib.h> //malloc
+#include<string.h> //memcpy
+
 t_permutation create_permutation(int array_length, int *array) {
   t_permutation permutation;
   permutation.len = array_length;
