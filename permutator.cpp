@@ -20,9 +20,9 @@ struct t_permutation {
 template<typename T> t_permutation<T>::
 t_permutation(int array_length, T *array) {
   len = array_length;
-  original_array = (int *)malloc(array_length * sizeof(int));
-  last_permutation = (int *)malloc(array_length * sizeof(int));
-  index = (int *)malloc(array_length * sizeof(int));
+  original_array = new int[array_length];
+  last_permutation = new int[array_length];
+  index = new int[array_length];
   memcpy(original_array, array, array_length * sizeof(int));
   memcpy(last_permutation, array, array_length * sizeof(int));
   for(int digit = 0; digit < array_length; digit += 1) {
@@ -32,9 +32,9 @@ t_permutation(int array_length, T *array) {
 
 template<typename T> t_permutation<T>::
 ~t_permutation(void) {
-  free(original_array);
-  free(last_permutation);
-  free(index);
+  delete[] original_array;
+  delete[] last_permutation;
+  delete[] index;
 }
 
 template<typename T> void t_permutation<T>::
@@ -82,7 +82,7 @@ permutation_count(void) {
 #include<stdio.h>
 int main(void) {
   int array[] = {'a', 'b', 'c'};
-  int array_length = sizeof array / sizeof array[0];
+  int array_length( sizeof array / sizeof array[0]);
   t_permutation<int> permutation(array_length, array);
   for(int permutation_index = 0; 
       permutation_index < permutation.permutation_count(); 

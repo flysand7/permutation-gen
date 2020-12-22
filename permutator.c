@@ -25,6 +25,12 @@ t_permutation create_permutation(int array_length, int *array) {
   return permutation;
 }
 
+void free_permutation(t_permutation *permutation) {
+  free(permutation->index);
+  free(permutation->original_array);
+  free(permutation->last_permutation);
+}
+
 void increment_permutation_index(t_permutation *permutation) {
   for(int i = permutation->len-1; i >= 0; i -= 1) {
     if(permutation->index[i] != permutation->len-1) {
