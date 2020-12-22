@@ -5,18 +5,17 @@
 
 template<typename T>
 struct t_permutation {
-  public: T *last_permutation;
-  private: 
-  int len;
-  int *index;
-  T *original_array;
-  
-  private: void increment_permutation_index(void);
-  public:
+  T *last_permutation;
   t_permutation(int array_length, T *array);
   ~t_permutation(void);
   int permutation_count(void);
   void permute(void);
+  
+  private: 
+  int len;
+  int *index;
+  T *original_array;
+  void increment_permutation_index(void);
 };
 
 template<typename T> t_permutation<T>::
