@@ -14,7 +14,7 @@ init_permutation(&permutation, array_length, array);
 
 2. Use `permute` procedure to permute the passed array. You can also query some fields like `t_permutation.permutation_index` and `t_permutation.permutation_count` to control the permutation.
 
-```
+```c
 for(size_t i = 0; i < permutation.permutation_count; i += 1) {
   permute(&permutation);
   do_something_with_array(permutation.permutation);
