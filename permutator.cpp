@@ -1,97 +1,43 @@
 
-#include<stdlib.h> // malloc
-#include<string.h> // memcpy
-
 template<typename T>
 struct t_permutation {
-  T *last_permutation;
-  t_permutation(int array_length, T *array);
-  ~t_permutation(void);
-  int permutation_count(void);
-  void permute(void);
-  
-  private: 
-  int len;
-  int *index;
-  T *original_array;
-  void increment_permutation_index(void);
+  size_t array_length;
+  T *permutation;
+  size_t permutation_index;
+  size_t permutation_count;
 };
 
-template<typename T> t_permutation<T>::
-t_permutation(int array_length, T *array) {
-  len = array_length;
-  original_array = new int[array_length];
-  last_permutation = new int[array_length];
-  index = new int[array_length];
-  memcpy(original_array, array, array_length * sizeof(int));
-  memcpy(last_permutation, array, array_length * sizeof(int));
-  for(int digit = 0; digit < array_length; digit += 1) {
-    index[digit] = digit;
+template<typename T> 
+void init_permutation(t_permutation<T> *permutation, size_t array_length, T *array) {
+  permutation->array_length = array_length;
+  permutation->permutation = array;
+  permutation->permutation_count = 1;
+  permutation->permutation_index = 0;
+  for(size_t index = 2; index <= array_length; index += 1) {
+    permutation->permutation_count *= index;
   }
 }
 
-template<typename T> t_permutation<T>::
-~t_permutation(void) {
-  delete[] original_array;
-  delete[] last_permutation;
-  delete[] index;
-}
-
-template<typename T> void t_permutation<T>::
-increment_permutation_index(void) {
-  for(int i =  len-1; i >= 0; i -= 1) {
-    if(index[i] !=  len-1) {
-      index[i] += 1;
-      break;
-    }
-    index[i] = 0;
+size_t weave(size_t k, size_t n) {
+  if(n == 2) return 0;
+  if(k % n != 0) {
+    if(k % (2*n) > n) return (2*n - k - 1) % n;
+    else return (k-1) % n;
+  }
+  else {
+    if(k % (2*n) == n) return weave(k/n, n-1);
+    else return weave(k/n, n-1)+1;
   }
 }
 
-template<typename T> void t_permutation<T>::
-permute(void) {
-  while(true) {
-    increment_permutation_index();
-    bool repeating = false;
-    for(int digit_index = 1; digit_index <  len; digit_index += 1) {
-      for(int i = digit_index - 1; i >= 0; i -= 1) {
-        if(index[digit_index] ==  index[i]) {
-          repeating = true;
-          break;
-        }
-      }
-    }
-    if(!repeating) {
-      for(int i = 0; i <  len; i += 1) {
-        last_permutation[i] =  original_array[ index[i]];
-      }
-      break;
-    }
+template<typename T> 
+void permute(t_permutation<T> *permutation) {
+  permutation->permutation_index += 1;
+  size_t swap_index = weave(permutation->permutation_index, permutation->array_length);
+  T tmp = permutation->permutation[swap_index];
+  permutation->permutation[swap_index] = permutation->permutation[swap_index+1];
+  permutation->permutation[swap_index+1] = tmp;
+  if(permutation->permutation_index == permutation->permutation_count) {
+    permutation->permutation_index = 0;
   }
-}
-
-template<typename T> int t_permutation<T>::
-permutation_count(void) {
-  int result = 1;
-  for(int i = 2; i <=  len; i += 1) {
-    result *= i;
-  }
-  return result;
-}
-
-#include<stdio.h>
-int main(void) {
-  int array[] = {'a', 'b', 'c'};
-  int array_length( sizeof array / sizeof array[0]);
-  t_permutation<int> permutation(array_length, array);
-  for(int permutation_index = 0; 
-      permutation_index < permutation.permutation_count(); 
-      permutation_index += 1) {
-    for(int index = 0; index < array_length; index += 1) {
-      printf("%c", permutation.last_permutation[index]);
-    }
-    permutation.permute();
-    printf("\n");
-  }
-  return 0;
 }
